@@ -1,14 +1,16 @@
 package com.ftgo.user.userservice.entity;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.ftgo.user.userservice.entity.converter.GrantedAuthorityConverter;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class User {
+public class BaseUser implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
     @Id
     private Long id;
@@ -17,12 +19,15 @@ public class User {
     private String email;
     private String phoneNumber;
     @ElementCollection
+    @CollectionTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "authority")
+    @Convert(converter = GrantedAuthorityConverter.class)
     private List<GrantedAuthority> authorities;
 
-    public User() {
+    public BaseUser() {
     }
 
-    public User(String username, String password, String email, String phoneNumber) {
+    public BaseUser(String username, String password, String email, String phoneNumber) {
         this.username = username;
         this.password = password;
         this.email = email;
