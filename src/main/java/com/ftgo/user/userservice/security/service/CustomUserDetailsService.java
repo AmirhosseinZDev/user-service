@@ -2,25 +2,18 @@ package com.ftgo.user.userservice.security.service;
 
 import com.ftgo.user.userservice.entity.BaseUser;
 import com.ftgo.user.userservice.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     // Inject your repository for user data (for example, a JPA repository)
     private final UserRepository userRepository;
-
-    /**
-     * Constructor for CustomUserDetailsService.
-     *
-     * @param userRepository the user repository
-     */
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     /**
      * Load user by username.
