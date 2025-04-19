@@ -38,7 +38,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         user.setEmail(requestDto.getEmail());
         user.setPhoneNumber(requestDto.getPhoneNumber());
-        user.setRole(convertTORole(requestDto.getRole()));
+        user.getRoles().add(convertTORole(requestDto.getRole()));
         userRepository.save(user);
     }
 

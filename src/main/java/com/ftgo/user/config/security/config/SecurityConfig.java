@@ -25,7 +25,8 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/login").permitAll() // Public endpoints
+                        .requestMatchers("/user/login", "/user/register")
+                        .permitAll() // Public endpoints
                         .anyRequest().authenticated() // Secure other endpoints
                 )
                 .httpBasic(Customizer.withDefaults()); // Use basic authentication as a fallback for testing
