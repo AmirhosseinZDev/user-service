@@ -1,6 +1,7 @@
 package com.ftgo.user.controller;
 
 import com.ftgo.user.api.dto.LoginRequest;
+import com.ftgo.user.api.dto.RegisterUserRequestDto;
 import com.ftgo.user.api.dto.TokenResponse;
 import com.ftgo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,5 +24,10 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public TokenResponse login(@RequestBody LoginRequest loginRequest) {
         return userService.login(loginRequest);
+    }
+
+    @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void register(@RequestBody RegisterUserRequestDto requestDto) {
+        userService.register(requestDto);
     }
 }
