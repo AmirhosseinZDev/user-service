@@ -1,7 +1,6 @@
 package com.ftgo.user.api.dto;
 
 import com.ftgo.user.api.dto.enumaration.UserRole;
-import com.tosan.validation.constraints.Expression;
 import com.tosan.validation.constraints.MobileNumber;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -13,11 +12,6 @@ import lombok.Data;
  * @since 4/19/25
  */
 @Data
-@Expression(
-        identifier = "RegisterUserRequestDto.whenRoleEqualUserOrCourierThenPhoneNumberMustHaveValue",
-        value = "((this.role eq ROLE_USER or this.role eq ROLE_COURIER) and this.phoneNumber ne null) or" +
-                "((this.role eq ROLE_RESTAURANT or this.role eq ROLE_ADMIN) and this.phoneNumber eq null) ",
-        message = "if role equal to ROLE_USER or ROLE_COURIER then phone number must have value otherwise must be null.")
 public class RegisterUserRequestDto {
 
     @NotEmpty

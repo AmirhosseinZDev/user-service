@@ -1,6 +1,6 @@
 package com.ftgo.user.config.security.service;
 
-import com.ftgo.user.persistence.entity.User;
+import com.ftgo.user.persistence.entity.AppUser;
 import com.ftgo.user.persistence.entity.enumaration.Role;
 import com.ftgo.user.persistence.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -31,15 +31,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Retrieve user from database
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
+        AppUser appUser = userRepository.findByUsername(username);
+        if (appUser == null) {
             throw new UsernameNotFoundException("User not found with username " + username);
         }
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : user.getRoles()) {
+        for (Role role : appUser.getRoles()) {
             authorities.add(new SimpleGrantedAuthority(role.name()));
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+        return new org.springframework.security.core.userdetails.User(appUser.getUsername(), appUser.getPassword(),
                 authorities);
     }
 }

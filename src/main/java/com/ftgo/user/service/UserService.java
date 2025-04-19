@@ -5,7 +5,7 @@ import com.ftgo.user.api.dto.RegisterUserRequestDto;
 import com.ftgo.user.api.dto.TokenResponse;
 import com.ftgo.user.api.dto.enumaration.UserRole;
 import com.ftgo.user.config.security.config.JwtTokenProvider;
-import com.ftgo.user.persistence.entity.User;
+import com.ftgo.user.persistence.entity.AppUser;
 import com.ftgo.user.persistence.entity.enumaration.Role;
 import com.ftgo.user.persistence.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,13 +33,13 @@ public class UserService {
     }
 
     public void register(RegisterUserRequestDto requestDto) {
-        User user = new User();
-        user.setUsername(requestDto.getUsername());
-        user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
-        user.setEmail(requestDto.getEmail());
-        user.setPhoneNumber(requestDto.getPhoneNumber());
-        user.getRoles().add(convertTORole(requestDto.getRole()));
-        userRepository.save(user);
+        AppUser appUser = new AppUser();
+        appUser.setUsername(requestDto.getUsername());
+        appUser.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+        appUser.setEmail(requestDto.getEmail());
+        appUser.setPhoneNumber(requestDto.getPhoneNumber());
+        appUser.getRoles().add(convertTORole(requestDto.getRole()));
+        userRepository.save(appUser);
     }
 
     private Role convertTORole(UserRole userRole) {
