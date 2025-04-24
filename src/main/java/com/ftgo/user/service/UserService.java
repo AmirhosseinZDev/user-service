@@ -5,8 +5,10 @@ import com.ftgo.user.api.dto.RegisterUserRequestDto;
 import com.ftgo.user.api.dto.TokenResponse;
 import com.ftgo.user.api.dto.enumaration.UserRole;
 import com.ftgo.user.config.security.config.JwtTokenProvider;
+import com.ftgo.user.persistence.document.AppUserDocument;
 import com.ftgo.user.persistence.entity.AppUser;
 import com.ftgo.user.persistence.entity.enumaration.Role;
+import com.ftgo.user.persistence.repository.AppUserRepository;
 import com.ftgo.user.persistence.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +25,7 @@ public class UserService {
     private final JwtTokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final AppUserRepository appUserRepository;
 
     public TokenResponse login(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
@@ -33,13 +36,13 @@ public class UserService {
     }
 
     public void register(RegisterUserRequestDto requestDto) {
-        AppUser appUser = new AppUser();
+        AppUserDocument appUser = new AppUserDocument();
         appUser.setUsername(requestDto.getUsername());
         appUser.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         appUser.setEmail(requestDto.getEmail());
         appUser.setPhoneNumber(requestDto.getPhoneNumber());
         appUser.getRoles().add(convertTORole(requestDto.getRole()));
-        userRepository.save(appUser);
+        appUserRepository.save(appUser);
     }
 
     private Role convertTORole(UserRole userRole) {

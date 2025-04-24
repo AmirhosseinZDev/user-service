@@ -1,7 +1,7 @@
 package com.ftgo.user.config.security.service;
 
-import com.ftgo.user.persistence.entity.AppUser;
-import com.ftgo.user.persistence.entity.enumaration.Role;
+import com.ftgo.user.persistence.document.AppUserDocument;
+import com.ftgo.user.persistence.repository.AppUserRepository;
 import com.ftgo.user.persistence.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     // Inject your repository for user data (for example, a JPA repository)
     private final UserRepository userRepository;
-
+    private final AppUserRepository appUserRepository;
     /**
      * Load user by username.
      *
@@ -30,17 +30,16 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Retrieve user from database
-        AppUser appUser = userRepository.findByUsername(username);
-        if (appUser == null) {
-            throw new UsernameNotFoundException("User not found with username " + username);
-        }
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : appUser.getRoles()) {
-            authorities.add(new SimpleGrantedAuthority(role.name()));
-        }
-        return new org.springframework.security.core.userdetails.User(appUser.getUsername(), appUser.getPassword(),
-                authorities);
+
+        AppUserDocument appUser = appUserRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+
+        List<GrantedAuthority> authorities = appUser.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toList());
+
+        return new org.springframework.security.core.userdetails.User(appUser.getUsername(), appUser.getPassword(), authorities);
     }
+
 }
 
