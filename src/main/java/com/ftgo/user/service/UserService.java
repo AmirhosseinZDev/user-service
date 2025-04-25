@@ -6,10 +6,8 @@ import com.ftgo.user.api.dto.TokenResponse;
 import com.ftgo.user.api.dto.enumaration.UserRole;
 import com.ftgo.user.config.security.config.JwtTokenProvider;
 import com.ftgo.user.persistence.document.AppUserDocument;
-import com.ftgo.user.persistence.entity.AppUser;
 import com.ftgo.user.persistence.entity.enumaration.Role;
 import com.ftgo.user.persistence.repository.AppUserRepository;
-import com.ftgo.user.persistence.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,7 +22,6 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
     private final AppUserRepository appUserRepository;
 
     public TokenResponse login(LoginRequest loginRequest) {

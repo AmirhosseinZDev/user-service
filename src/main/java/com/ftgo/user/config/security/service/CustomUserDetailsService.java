@@ -2,7 +2,6 @@ package com.ftgo.user.config.security.service;
 
 import com.ftgo.user.persistence.document.AppUserDocument;
 import com.ftgo.user.persistence.repository.AppUserRepository;
-import com.ftgo.user.persistence.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 public class CustomUserDetailsService implements UserDetailsService {
 
     // Inject your repository for user data (for example, a JPA repository)
-    private final UserRepository userRepository;
     private final AppUserRepository appUserRepository;
     /**
      * Load user by username.
