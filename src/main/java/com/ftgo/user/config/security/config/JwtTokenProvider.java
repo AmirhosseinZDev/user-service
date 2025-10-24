@@ -29,6 +29,10 @@ public class JwtTokenProvider {
 
     @Value("${app.jwt.expiration-ms}")
     private long jwtExpirationInMs;
+
+    @Value("${app.jwt.refresh-expiration-ms}")
+    private long refreshTokenExpirationInMs;
+
     private SecretKey key;
 
 
@@ -76,6 +80,54 @@ public class JwtTokenProvider {
                 .claim("auth", authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
+    }
+
+    /**
+     * Generates a refresh token for the given username.
+     *
+     * @param username The username for which the refresh token is generated.
+     * @return A refresh token string.
+     */
+    public String generateRefreshToken(String username) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + refreshTokenExpirationInMs);
+
+        return Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .setSubject(username)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .claim("tokenType", "refresh")
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+    /**
+     * Validates a refresh token and extracts the username.
+     *
+     * @param token The refresh token to validate.
+     * @return The username from the token if valid, null otherwise.
+     */
+    public String validateRefreshToken(String token) {
+        try {
+            var claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            // Verify it's a refresh token
+            String tokenType = claims.get("tokenType", String.class);
+            if (!"refresh".equals(tokenType)) {
+                log.warn("Token is not a refresh token");
+                return null;
+            }
+
+            return claims.getSubject();
+        } catch (Exception e) {
+            log.error("Invalid refresh token: {}", e.getMessage());
+            return null;
+        }
     }
 
 }

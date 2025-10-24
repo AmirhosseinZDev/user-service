@@ -25,7 +25,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/login", "/user/register")
+                        .requestMatchers("/user/login", "/user/register", "/user/refresh-token")
                         .permitAll() // Public endpoints
                         .anyRequest().authenticated() // Secure other endpoints
                 )

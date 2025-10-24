@@ -10,5 +10,9 @@ import lombok.RequiredArgsConstructor;
 public class TokenResponse {
 
     private String token;
+    private String refreshToken;
 
+    public TokenResponse(String token) {
+        this.token = token;
+    }
 }

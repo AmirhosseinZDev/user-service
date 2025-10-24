@@ -30,5 +30,7 @@ public class AppUserDocument {
     private String phoneNumber;
 
     private Set<Role> roles = new HashSet<>();
+
+    private String refreshToken;
 }
 
