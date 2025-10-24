@@ -1,6 +1,7 @@
 package com.ftgo.user.controller;
 
 import com.ftgo.user.api.dto.LoginRequest;
+import com.ftgo.user.api.dto.RefreshTokenRequest;
 import com.ftgo.user.api.dto.RegisterUserRequestDto;
 import com.ftgo.user.api.dto.TokenResponse;
 import com.ftgo.user.service.UserService;
@@ -29,5 +30,11 @@ public class UserController {
     @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void register(@RequestBody RegisterUserRequestDto requestDto) {
         userService.register(requestDto);
+    }
+
+    @PostMapping(path = "/refresh-token", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public TokenResponse refreshToken(@RequestBody RefreshTokenRequest request) {
+        return userService.refreshToken(request);
     }
 }
