@@ -1,18 +1,17 @@
 package com.ftgo.user.api.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class TokenResponse {
 
     private String token;
     private String refreshToken;
 
-    public TokenResponse(String token) {
+    public TokenResponse(String token, String refreshToken) {
         this.token = token;
+        this.refreshToken = refreshToken;
     }
 }
